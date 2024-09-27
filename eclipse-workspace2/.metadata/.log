@@ -3209,3 +3209,369 @@ This warning can be switched off on the Team > Git > Confirmations and Warnings 
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2024-09-27 10:08:13.235
 !MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.ui 4 0 2024-09-27 11:02:00.169
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Object doesn't support property or method 'getComputedStyle'
+	at org.eclipse.swt.browser.WebBrowser$EvaluateFunction.function(WebBrowser.java:195)
+	at org.eclipse.swt.browser.WebSite.Invoke(WebSite.java:809)
+	at org.eclipse.swt.browser.WebSite$7.method6(WebSite.java:182)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.ole.win32.COM.VtblCall(Native Method)
+	at org.eclipse.swt.internal.ole.win32.IDispatch.Invoke(IDispatch.java:65)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:575)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:538)
+	at org.eclipse.swt.browser.IE.execute(IE.java:1202)
+	at org.eclipse.swt.browser.WebBrowser.nonBlockingExecute(WebBrowser.java:400)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:450)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:406)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:665)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:614)
+	at org.eclipse.lsp4e.operations.hover.FocusableBrowserInformationControl.lambda$0(FocusableBrowserInformationControl.java:102)
+	at org.eclipse.swt.browser.ProgressListener$2.completed(ProgressListener.java:98)
+	at org.eclipse.swt.browser.IE.lambda$6(IE.java:656)
+	at org.eclipse.swt.ole.win32.OleEventTable.sendEvent(OleEventTable.java:58)
+	at org.eclipse.swt.ole.win32.OleEventSink.notifyListener(OleEventSink.java:160)
+	at org.eclipse.swt.ole.win32.OleEventSink.Invoke(OleEventSink.java:128)
+	at org.eclipse.swt.ole.win32.OleEventSink$1.method6(OleEventSink.java:79)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3658)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1155)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1046)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:643)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:550)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:171)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:402)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.ui 4 0 2024-09-27 11:02:03.929
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Object doesn't support property or method 'getComputedStyle'
+	at org.eclipse.swt.browser.WebBrowser$EvaluateFunction.function(WebBrowser.java:195)
+	at org.eclipse.swt.browser.WebSite.Invoke(WebSite.java:809)
+	at org.eclipse.swt.browser.WebSite$7.method6(WebSite.java:182)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.ole.win32.COM.VtblCall(Native Method)
+	at org.eclipse.swt.internal.ole.win32.IDispatch.Invoke(IDispatch.java:65)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:575)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:538)
+	at org.eclipse.swt.browser.IE.execute(IE.java:1202)
+	at org.eclipse.swt.browser.WebBrowser.nonBlockingExecute(WebBrowser.java:400)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:450)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:406)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:665)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:614)
+	at org.eclipse.lsp4e.operations.hover.FocusableBrowserInformationControl.lambda$0(FocusableBrowserInformationControl.java:102)
+	at org.eclipse.swt.browser.ProgressListener$2.completed(ProgressListener.java:98)
+	at org.eclipse.swt.browser.IE.lambda$6(IE.java:656)
+	at org.eclipse.swt.ole.win32.OleEventTable.sendEvent(OleEventTable.java:58)
+	at org.eclipse.swt.ole.win32.OleEventSink.notifyListener(OleEventSink.java:160)
+	at org.eclipse.swt.ole.win32.OleEventSink.Invoke(OleEventSink.java:128)
+	at org.eclipse.swt.ole.win32.OleEventSink$1.method6(OleEventSink.java:79)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3658)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1155)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1046)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:643)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:550)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:171)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:402)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.lsp4e 2 0 2024-09-27 11:02:19.294
+!MESSAGE Could not detect hyperlinks due to timeout after 800 miliseconds
+!STACK 0
+java.util.concurrent.TimeoutException
+	at java.base/java.util.concurrent.CompletableFuture.timedGet(CompletableFuture.java:1960)
+	at java.base/java.util.concurrent.CompletableFuture.get(CompletableFuture.java:2095)
+	at org.eclipse.lsp4e.operations.declaration.OpenDeclarationHyperlinkDetector.detectHyperlinks(OpenDeclarationHyperlinkDetector.java:68)
+	at org.eclipse.ui.texteditor.HyperlinkDetectorRegistry$HyperlinkDetectorDelegate.detectHyperlinks(HyperlinkDetectorRegistry.java:81)
+	at org.eclipse.jface.text.hyperlink.HyperlinkManager.findHyperlinks(HyperlinkManager.java:289)
+	at org.eclipse.jface.text.hyperlink.HyperlinkManager.findHyperlinks(HyperlinkManager.java:262)
+	at org.eclipse.jface.text.hyperlink.HyperlinkManager.mouseMove(HyperlinkManager.java:457)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:216)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:89)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:4274)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1066)
+	at org.eclipse.swt.widgets.Display.runDeferredEvents(Display.java:4072)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3660)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1155)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1046)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:643)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:550)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:171)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:402)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.ui 4 0 2024-09-27 11:02:58.185
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Object doesn't support property or method 'getComputedStyle'
+	at org.eclipse.swt.browser.WebBrowser$EvaluateFunction.function(WebBrowser.java:195)
+	at org.eclipse.swt.browser.WebSite.Invoke(WebSite.java:809)
+	at org.eclipse.swt.browser.WebSite$7.method6(WebSite.java:182)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.ole.win32.COM.VtblCall(Native Method)
+	at org.eclipse.swt.internal.ole.win32.IDispatch.Invoke(IDispatch.java:65)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:575)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:538)
+	at org.eclipse.swt.browser.IE.execute(IE.java:1202)
+	at org.eclipse.swt.browser.WebBrowser.nonBlockingExecute(WebBrowser.java:400)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:450)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:406)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:665)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:614)
+	at org.eclipse.lsp4e.operations.hover.FocusableBrowserInformationControl.lambda$0(FocusableBrowserInformationControl.java:102)
+	at org.eclipse.swt.browser.ProgressListener$2.completed(ProgressListener.java:98)
+	at org.eclipse.swt.browser.IE.lambda$6(IE.java:656)
+	at org.eclipse.swt.ole.win32.OleEventTable.sendEvent(OleEventTable.java:58)
+	at org.eclipse.swt.ole.win32.OleEventSink.notifyListener(OleEventSink.java:160)
+	at org.eclipse.swt.ole.win32.OleEventSink.Invoke(OleEventSink.java:128)
+	at org.eclipse.swt.ole.win32.OleEventSink$1.method6(OleEventSink.java:79)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3658)
+	at org.eclipse.jface.internal.text.html.BrowserInformationControl.setVisible(BrowserInformationControl.java:357)
+	at org.eclipse.jface.text.AbstractInformationControlManager.showInformationControl(AbstractInformationControlManager.java:1240)
+	at org.eclipse.jface.text.TextViewerHoverManager.showInformationControl(TextViewerHoverManager.java:276)
+	at org.eclipse.jface.text.AbstractInformationControlManager.internalShowInformationControl(AbstractInformationControlManager.java:1191)
+	at org.eclipse.jface.text.AbstractInformationControlManager.presentInformation(AbstractInformationControlManager.java:1120)
+	at org.eclipse.jface.text.AbstractHoverInformationControlManager.presentInformation(AbstractHoverInformationControlManager.java:884)
+	at org.eclipse.jface.text.TextViewerHoverManager.doPresentInformation(TextViewerHoverManager.java:237)
+	at org.eclipse.jface.text.TextViewerHoverManager.lambda$3(TextViewerHoverManager.java:227)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:132)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4047)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3663)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1155)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1046)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:643)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:550)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:171)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:402)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.ui 4 0 2024-09-27 11:02:58.705
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Object doesn't support property or method 'getComputedStyle'
+	at org.eclipse.swt.browser.WebBrowser$EvaluateFunction.function(WebBrowser.java:195)
+	at org.eclipse.swt.browser.WebSite.Invoke(WebSite.java:809)
+	at org.eclipse.swt.browser.WebSite$7.method6(WebSite.java:182)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.ole.win32.COM.VtblCall(Native Method)
+	at org.eclipse.swt.internal.ole.win32.IDispatch.Invoke(IDispatch.java:65)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:575)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:538)
+	at org.eclipse.swt.browser.IE.execute(IE.java:1202)
+	at org.eclipse.swt.browser.WebBrowser.nonBlockingExecute(WebBrowser.java:400)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:450)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:406)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:665)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:614)
+	at org.eclipse.lsp4e.operations.hover.FocusableBrowserInformationControl.lambda$0(FocusableBrowserInformationControl.java:102)
+	at org.eclipse.swt.browser.ProgressListener$2.completed(ProgressListener.java:98)
+	at org.eclipse.swt.browser.IE.lambda$6(IE.java:656)
+	at org.eclipse.swt.ole.win32.OleEventTable.sendEvent(OleEventTable.java:58)
+	at org.eclipse.swt.ole.win32.OleEventSink.notifyListener(OleEventSink.java:160)
+	at org.eclipse.swt.ole.win32.OleEventSink.Invoke(OleEventSink.java:128)
+	at org.eclipse.swt.ole.win32.OleEventSink$1.method6(OleEventSink.java:79)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3658)
+	at org.eclipse.jface.internal.text.html.BrowserInformationControl.setVisible(BrowserInformationControl.java:357)
+	at org.eclipse.jface.text.AbstractInformationControlManager.showInformationControl(AbstractInformationControlManager.java:1240)
+	at org.eclipse.jface.text.TextViewerHoverManager.showInformationControl(TextViewerHoverManager.java:276)
+	at org.eclipse.jface.text.AbstractInformationControlManager.internalShowInformationControl(AbstractInformationControlManager.java:1191)
+	at org.eclipse.jface.text.AbstractInformationControlManager.presentInformation(AbstractInformationControlManager.java:1120)
+	at org.eclipse.jface.text.AbstractHoverInformationControlManager.presentInformation(AbstractHoverInformationControlManager.java:884)
+	at org.eclipse.jface.text.TextViewerHoverManager.doPresentInformation(TextViewerHoverManager.java:237)
+	at org.eclipse.jface.text.TextViewerHoverManager.lambda$3(TextViewerHoverManager.java:227)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:132)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4047)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3663)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1155)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1046)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:643)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:550)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:171)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:402)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2024-09-27 11:02:59.233
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2024-09-27 11:02:59.239
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.ui 4 0 2024-09-27 11:03:00.315
+!MESSAGE Unhandled event loop exception
+!STACK 0
+org.eclipse.swt.SWTException: Object doesn't support property or method 'getComputedStyle'
+	at org.eclipse.swt.browser.WebBrowser$EvaluateFunction.function(WebBrowser.java:195)
+	at org.eclipse.swt.browser.WebSite.Invoke(WebSite.java:809)
+	at org.eclipse.swt.browser.WebSite$7.method6(WebSite.java:182)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.ole.win32.COM.VtblCall(Native Method)
+	at org.eclipse.swt.internal.ole.win32.IDispatch.Invoke(IDispatch.java:65)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:575)
+	at org.eclipse.swt.ole.win32.OleAutomation.invoke(OleAutomation.java:538)
+	at org.eclipse.swt.browser.IE.execute(IE.java:1202)
+	at org.eclipse.swt.browser.WebBrowser.nonBlockingExecute(WebBrowser.java:400)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:450)
+	at org.eclipse.swt.browser.WebBrowser.evaluate(WebBrowser.java:406)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:665)
+	at org.eclipse.swt.browser.Browser.evaluate(Browser.java:614)
+	at org.eclipse.lsp4e.operations.hover.FocusableBrowserInformationControl.lambda$0(FocusableBrowserInformationControl.java:102)
+	at org.eclipse.swt.browser.ProgressListener$2.completed(ProgressListener.java:98)
+	at org.eclipse.swt.browser.IE.lambda$6(IE.java:656)
+	at org.eclipse.swt.ole.win32.OleEventTable.sendEvent(OleEventTable.java:58)
+	at org.eclipse.swt.ole.win32.OleEventSink.notifyListener(OleEventSink.java:160)
+	at org.eclipse.swt.ole.win32.OleEventSink.Invoke(OleEventSink.java:128)
+	at org.eclipse.swt.ole.win32.OleEventSink$1.method6(OleEventSink.java:79)
+	at org.eclipse.swt.internal.ole.win32.COMObject.callback6(COMObject.java:120)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3658)
+	at org.eclipse.jface.internal.text.html.BrowserInformationControl.setVisible(BrowserInformationControl.java:357)
+	at org.eclipse.jface.text.AbstractInformationControlManager.showInformationControl(AbstractInformationControlManager.java:1240)
+	at org.eclipse.jface.text.TextViewerHoverManager.showInformationControl(TextViewerHoverManager.java:276)
+	at org.eclipse.jface.text.AbstractInformationControlManager.internalShowInformationControl(AbstractInformationControlManager.java:1191)
+	at org.eclipse.jface.text.AbstractInformationControlManager.presentInformation(AbstractInformationControlManager.java:1120)
+	at org.eclipse.jface.text.AbstractHoverInformationControlManager.presentInformation(AbstractHoverInformationControlManager.java:884)
+	at org.eclipse.jface.text.TextViewerHoverManager.doPresentInformation(TextViewerHoverManager.java:237)
+	at org.eclipse.jface.text.TextViewerHoverManager.lambda$3(TextViewerHoverManager.java:227)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:40)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:132)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:4047)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3663)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1155)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1046)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:155)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:643)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:338)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:550)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:171)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:152)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:203)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:402)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:659)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:596)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1467)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1440)
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2024-09-27 11:03:25.770
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2024-09-27 11:03:25.774
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2024-09-27 11:04:51.815
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.m2e.logback.appender 2 0 2024-09-27 11:04:51.818
+!MESSAGE Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.jface 2 0 2024-09-27 11:11:29.799
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2024-09-27 11:11:29.799
+!MESSAGE A conflict occurred for CTRL+INSERT:
+Binding(CTRL+INSERT,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.copy,Copy,
+		,
+		Category(org.eclipse.tm.terminal.category1,Terminal view commands,Terminal view commands,true),
+		WorkbenchHandlerServiceHandler("org.eclipse.tm.terminal.copy"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.tm.terminal.EditContext,,,system)
+Binding(CTRL+INSERT,
+	ParameterizedCommand(Command(org.eclipse.ui.edit.copy,Copy,
+		Copy the selection to the clipboard,
+		Category(org.eclipse.ui.category.edit,Edit,null,true),
+		WorkbenchHandlerServiceHandler("org.eclipse.ui.edit.copy"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.dialogAndWindow,,,system)
+Binding(CTRL+INSERT,
+	ParameterizedCommand(Command(AnsiConsole.command.copy_without_escapes,Copy Text Without ANSI Escapes,
+		Copy the console content to clipboard, removing the escape sequences,
+		Category(AnsiConsole.command.categoryid,ANSI Support Commands,null,true),
+		WorkbenchHandlerServiceHandler("AnsiConsole.command.copy_without_escapes"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.console.ConsoleView,,,system)
