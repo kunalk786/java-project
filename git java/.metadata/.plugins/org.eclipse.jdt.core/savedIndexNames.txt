@@ -1,0 +1,2 @@
+INDEX VERSION 1.134+C:\Users\BHTPL_USR73\git java\.metadata\.plugins\org.eclipse.jdt.core
+335333203.index
