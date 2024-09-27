@@ -1,0 +1,67 @@
+package Test_Scenarios;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.*;
+import io.opentelemetry.sdk.resources.Resource;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+public class signUpScenrio {
+
+		 public static void main(String[] args) throws IOException, InterruptedException {
+
+		        WebDriver driver = new ChromeDriver();
+
+		        driver.manage().window().maximize();
+
+		        driver.get("https://www.practina.com/demo/");
+
+		        // Use Duration for implicit wait
+		        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		        
+		        String uniqueEmail = generateUniqueEmail();
+
+		        WebElement createYourAcc = driver.findElement(By.xpath("//h6[@class='fw-600 fs-16 link-blue-color fs-md-14 signup-text d-inline-block cursor']"));
+		        createYourAcc.click();
+
+		        WebElement fullName = driver.findElement(By.xpath("//input[@formcontrolname='full_name']"));
+		        fullName.sendKeys("Kunal Kumar Ummat");
+		        
+		        WebElement emailAddress = driver.findElement(By.xpath("//input[@formcontrolname='email']"));
+		        emailAddress.sendKeys(uniqueEmail);
+		        
+		        
+		        
+		        
+		        
+		        
+
+	}
+		 
+		  private static String generateUniqueEmail() {
+		        // Prefix and Suffix for email
+		        String prefix = "kunal.kumar+dummybot";
+		        String suffix = "@bridgingtech.com";
+		        
+		        // Generate unique identifier (timestamp in milliseconds)
+		        long timestamp = System.currentTimeMillis();
+		        
+		        // Combine prefix, timestamp, and suffix to form the unique email
+		        return prefix + timestamp + suffix;
+		    }
+
+}

@@ -1,0 +1,159 @@
+package Test_Scenarios;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.concurrent.TimeUnit;
+
+public class signUpScenrio {
+	
+    // Original phone numbers
+    static String[] phoneNumbers = {
+            "6362105081", // First number
+            "2085689244", // Second number
+            "3156391275", // Third number
+            "3152593478"  // Fourth number
+    };
+
+    public static void main(String[] args) throws InterruptedException {
+
+        WebDriver driver = new ChromeDriver();
+
+        // Maximize browser window
+        driver.manage().window().maximize();
+
+        // Navigate to the sign-up page
+        driver.get("https://www.practina.com/demo/");
+
+        // Store original window handle
+        String originalWindow = driver.getWindowHandle();
+        
+        // Use Duration for implicit wait
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+
+        // Generate a unique email
+        String uniqueEmail = generateUniqueEmail();
+        
+        long timestamp = System.currentTimeMillis();
+
+        // Find and click on "Create Your Account"
+        WebElement createYourAcc = driver.findElement(By.xpath("//h6[@class='fw-600 fs-16 link-blue-color fs-md-14 signup-text d-inline-block cursor']"));
+        createYourAcc.click();
+
+        // Fill in the signup form
+        WebElement fullName = driver.findElement(By.xpath("//input[@formcontrolname='full_name']"));
+        fullName.sendKeys("Kunal Kumar Ummat");
+
+        WebElement emailAddress = driver.findElement(By.xpath("//input[@formcontrolname='email']"));
+        emailAddress.sendKeys(uniqueEmail);
+
+        // Initialize signup success flag
+        boolean signupSuccess = false;
+        
+        String modifiedNumber = "";
+
+        // Try each phone number
+        for (int i = 0; i < phoneNumbers.length; i++) {
+            modifiedNumber = modifyNumber(phoneNumbers[i], i);
+            signupSuccess = trySignupWithPhoneNumber(driver, modifiedNumber, uniqueEmail);
+
+            if (signupSuccess) {
+                System.out.println("Signup successful with phone number: " + modifiedNumber);
+                break;
+            } else {
+                System.out.println("Signup failed with phone number: " + modifiedNumber);
+            }
+        }
+
+        // Check if signup failed with all numbers
+        if (!signupSuccess) {
+            System.out.println("Signup failed with all provided numbers.");
+        }
+
+        WebElement selectingTrial = driver.findElement(By.xpath("//div[contains(@class, 'trial-box')]//div[contains(@class, 'start-btn')]//p[contains(@class, 'skip-trial') and contains(text(), '14 Day Free Trial')]"));
+        selectingTrial.click();
+        
+        WebElement startFreeTrialButton = driver.findElement(By.xpath("//button[contains(@class, 'btn-primary') and contains(text(), 'Start Free Trial')]"));
+        startFreeTrialButton.click();
+        
+        Thread.sleep(2000);
+        WebElement startNowButton = driver.findElement(By.xpath("//button[contains(@class, 'btn-primary') and contains(text(), 'Start Now')]"));
+        System.out.println(startNowButton);
+        startNowButton.click();
+        
+        WebElement bussName = driver.findElement(By.xpath("//input[@formcontrolname='buss_name']"));
+		String businessName = "Kunal ki bot " + timestamp;  // Concatenate the timestamp
+        bussName.sendKeys(businessName);
+        
+        WebElement bussEmail = driver.findElement(By.xpath("//input[@formcontrolname='buss_email']"));
+        bussEmail.sendKeys(uniqueEmail);
+        
+        WebElement bussContactNumber = driver.findElement(By.xpath("//input[@formcontrolname='buss_contact_no']"));
+        bussContactNumber.sendKeys(modifiedNumber);
+        
+        
+
+    }
+
+    // Generate a unique email for each signup attempt
+    private static String generateUniqueEmail() {
+        String prefix = "kunal.kumar+dummybot";
+        String suffix = "@bridgingtech.com";
+        long timestamp = System.currentTimeMillis();
+        return prefix + timestamp + suffix;
+        
+    }
+
+    // Modify one character of the phone number on each run
+    private static String modifyNumber(String originalNumber, int runCount) {
+        char[] numberChars = originalNumber.toCharArray();
+        int digitToModifyIndex = 3;  // Modify the 4th digit
+
+        // Increment the digit, wrapping around if it exceeds 9
+        numberChars[digitToModifyIndex] = (char) (((numberChars[digitToModifyIndex] - '0' + runCount) % 10) + '0');
+
+        // Return the modified number as a string
+        return new String(numberChars);
+    }
+
+    // Attempt signup with the modified phone number and generated email
+    private static boolean trySignupWithPhoneNumber(WebDriver driver, String phoneNumber, String email) {
+        try {
+            // Locate the phone number field and input the modified number
+            WebElement phoneNumberField = driver.findElement(By.xpath("//input[@formcontrolname='contact']"));
+            phoneNumberField.clear();
+            phoneNumberField.sendKeys(phoneNumber);
+
+            // Email is already filled in from before, fill in password
+            WebElement passwordField = driver.findElement(By.xpath("//input[@formcontrolname='password']"));
+            passwordField.clear();
+            passwordField.sendKeys("K419unalkumar@");
+
+            // Submit the form (adjust the button's selector as needed)
+            WebElement submitButton = driver.findElement(By.id("primaryButton"));
+            submitButton.click();
+
+            // Wait for the page to load and check for any error message
+            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+
+            // Check for an error message after submission
+            boolean isErrorPresent = driver.findElements(By.xpath("//div[@id='toast-container']/div/div[contains(text(), 'Contact number already exists')]")).size() > 0;
+            if (isErrorPresent) {
+              
+                Thread.sleep(6000);  // Pause for 5 seconds if the error message appears
+                passwordField.clear();
+                passwordField.sendKeys("K419unalkumar@");
+            }
+
+         // If no error is present, assume the signup was successful
+         return !isErrorPresent;
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}
