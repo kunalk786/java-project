@@ -1,0 +1,274 @@
+package Test_Scenarios;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.io.File;
+import java.time.Duration;
+import java.util.List;
+import java.util.Random;
+
+public class signUpScenrio {
+
+    // Original phone numbers
+    static String[] phoneNumbers = {
+        "6362105081", // First number
+        "2085689244", // Second number
+        "3156391275", // Third number
+        "3152593478"  // Fourth number
+    };
+
+    static Random random = new Random();
+    static WebDriverWait wait;
+
+    @SuppressWarnings("unused")
+	public static void main(String[] args) throws InterruptedException {
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-debugging-port=9222");
+        WebDriver driver = new ChromeDriver(options); 
+
+        // Set up wait
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20)); 
+
+        // Maximize browser window
+        driver.manage().window().maximize();
+
+        // Navigate to the sign-up page
+        driver.get("https://www.practina.com/demo");
+        System.out.println(org.openqa.selenium.WebDriver.class.getPackage().getImplementationVersion());
+
+        // Store original window handle
+        String originalWindow = driver.getWindowHandle();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+
+        // Generate a unique email
+        String uniqueEmail = generateUniqueEmail();
+        long timestamp = System.currentTimeMillis();
+
+        // Find and click on "Create Your Account"
+        WebElement createYourAcc = driver.findElement(By.xpath("//h6[@class='fw-600 fs-16 link-blue-color fs-md-14 signup-text d-inline-block cursor']"));
+        createYourAcc.click();
+
+        // Fill in the signup form
+        WebElement fullName = driver.findElement(By.xpath("//input[@formcontrolname='full_name']"));
+        fullName.sendKeys("Kunal Kumar Ummat");
+
+        WebElement emailAddress = driver.findElement(By.xpath("//input[@formcontrolname='email']"));
+        emailAddress.sendKeys(uniqueEmail);
+
+        // Initialize signup success flag
+        boolean signupSuccess = false;
+        String modifiedNumber = "";
+
+        // Try each phone number
+        for (String phoneNumber : phoneNumbers) {
+            modifiedNumber = modifyNumber(phoneNumber);
+            signupSuccess = trySignupWithPhoneNumber(driver, modifiedNumber, uniqueEmail);
+
+            if (signupSuccess) {
+                System.out.println("Signup successful with phone number: " + modifiedNumber);
+                break;
+            } else {
+                System.out.println("Signup failed with phone number: " + modifiedNumber);
+            }
+        }
+
+        // Check if signup failed with all numbers
+        if (!signupSuccess) {
+            System.out.println("Signup failed with all provided numbers.");
+        }
+
+        // Select 14 Day Free Trial
+        WebElement selectingTrial = driver.findElement(By.xpath("//div[contains(@class, 'trial-box')]//div[contains(@class, 'start-btn')]//p[contains(@class, 'skip-trial') and contains(text(), '14 Day Free Trial')]"));
+        selectingTrial.click();
+
+        WebElement startFreeTrialButton = driver.findElement(By.xpath("//button[contains(@class, 'btn-primary') and contains(text(), 'Start Free Trial')]"));
+        startFreeTrialButton.click();
+
+        // Wait for "Start Now" button to become clickable
+        WebElement startNowButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@class, 'btn-primary') and contains(text(), 'Start Now')]")));
+        startNowButton.click();
+
+        // Fill out business info
+        WebElement bussName = driver.findElement(By.xpath("//input[@formcontrolname='buss_name']"));
+        String businessName = "Kunal ki bot " + timestamp;
+        bussName.sendKeys(businessName);
+
+        WebElement bussEmail = driver.findElement(By.xpath("//input[@formcontrolname='buss_email']"));
+        bussEmail.sendKeys(uniqueEmail);
+
+        WebElement bussContactNumber = driver.findElement(By.xpath("//input[@formcontrolname='buss_contact_no']"));
+        bussContactNumber.sendKeys(modifiedNumber);
+
+        WebElement bussWebsite = driver.findElement(By.xpath("//input[@formcontrolname='website']"));
+        bussWebsite.sendKeys("https://practina.com");
+
+        WebElement bussImage = driver.findElement(By.xpath("//input[@class='upload-file text-light-grey position-absolute cursor w-100 h-100 fs-12 business-logo-shepherd']"));
+        File file = new File("C:\\Users\\BHTPL_USR73\\Downloads\\sasha.jpg");
+        bussImage.sendKeys(file.getAbsolutePath());
+
+        WebElement bussInfoSave = driver.findElement(By.id("Business_Info_Save"));
+        bussInfoSave.click();
+
+        // Add services info
+        WebElement serviceInfo = wait.until(ExpectedConditions.elementToBeClickable(By.id("services-input")));
+        serviceInfo.sendKeys("Dental care");
+        serviceInfo.sendKeys(Keys.ENTER);
+    
+        List<WebElement> selectionOfHeading = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@id='keyword_listing']/div/label")));
+        String headingToBeSelected = "dental";
+        boolean headingFound = false;
+        l1 : for (WebElement selectedHeading : selectionOfHeading) {
+            String headingText = selectedHeading.getText().toLowerCase();
+            System.out.println(headingText);
+            if (headingText.contains(headingToBeSelected)) {
+                List<WebElement> servicesList = driver.findElements(By.xpath("//div[@id='keyword_listing']/div/div"));
+                
+                String servicesToBeSelected = "Dental hygiene";
+                
+                headingFound= true;
+                boolean serviceFound = false;
+                
+                for (WebElement selectedServices : servicesList) {
+                    if (selectedServices.getText().equalsIgnoreCase(servicesToBeSelected)) {
+                    	System.out.println(selectedServices);
+                    	WebElement checkbox = driver.findElement(By.xpath("//div[@id='keyword_listing']/div/div/div/input"));
+//                        WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='keyword_listing']/div/div/div/input")));
+                        System.out.println(checkbox);
+                        checkbox.click();
+;
+                        serviceFound = true;
+                        break l1;
+                       
+                    }
+                }
+
+                if (!serviceFound) {
+                	WebElement firstCheckbox = driver.findElement(By.xpath("(//div[@id='keyword_listing']/div/div/div/input)[1]"));
+//                    WebElement firstCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='keyword_listing']/div/div/div/input)[1]")));
+                    System.out.println(firstCheckbox);
+                   
+                    firstCheckbox.click();
+                }
+                
+            } 
+            	
+                
+            }
+        		if (!headingFound) {
+//        			WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='keyword_listing']/div/div/div/input)[1]")));
+        			WebElement checkbox = driver.findElement(By.xpath("(//div[@id='keyword_listing']/div/div/div/input)[1]"));
+                    checkbox.click();
+        		}
+        		
+        		WebElement nextButton = driver.findElement(By.xpath("//button[contains(@class, 'btn-primary') and contains(@class, 'd-flex') and text()='Next ']"));
+        		nextButton.click();
+        		
+        		WebElement brandingQuestion1 = driver.findElement(By.xpath("//textarea[@placeholder='Type your answer here...']"));
+        		brandingQuestion1.sendKeys("To deliver compassionate, high-quality dental care that enhances the oral health and well-being of every patient we serve, with a focus on preventive care, comfort, and trust.");
+        		
+        		WebElement brandingQuestion2 = driver.findElement(By.xpath("(//textarea[@placeholder='Type your answer here...'])[2]"));
+        		brandingQuestion2.sendKeys(
+        		        "Comprehensive Care: From preventive treatments to advanced cosmetic and restorative procedures, your dental care brand may offer a full range of services under one roof.\r\n\r\n" +
+        		        "Patient-Centered Approach: Emphasizing a comfortable and stress-free experience, with personalized treatment plans that cater to individual needs.\r\n\r\n" +
+        		        "Cutting-Edge Technology: Leveraging the latest in dental technology, such as digital imaging, laser treatments, and minimally invasive procedures, to improve outcomes and reduce recovery time.\r\n\r\n" +
+        		        "Flexible Payment Options: Offering affordable payment plans or insurance partnerships to make dental care more accessible.\r\n\r\n" +
+        		        "Expert Team: A team of highly trained professionals dedicated to continual learning and applying the most effective techniques in dental care."
+        		);
+
+        		WebElement brandingQuestion3 = driver.findElement(By.xpath("(//textarea[@placeholder='Type your answer here...'])[3]"));
+        		brandingQuestion3.sendKeys(
+        		        "Compassion: Providing care that is empathetic and patient-centered, making patients feel comfortable and cared for.\r\n\r\n" +
+        		        "Excellence: Commitment to maintaining the highest standards of dental care and continually improving services.\r\n\r\n" +
+        		        "Integrity: Building trust through honest communication and ethical practices.\r\n\r\n" +
+        		        "Innovation: Embracing modern technology and new methods to enhance patient care.\r\n\r\n" +
+        		        "Accessibility: Striving to make dental care available to everyone, regardless of their background or financial situation."
+        		);
+
+        		
+        		WebElement nextButtonForBranding = driver.findElement(By.xpath("//button[contains(@class, 'btn-primary') and contains(@class, 'd-flex') and text()='Next ']"));
+        		nextButtonForBranding.click();
+        		
+        		WebElement connectLaterButton = driver.findElement(By.xpath("//span[text()='Connect Later']"));
+        		connectLaterButton.click();
+        		
+        		
+        		WebElement welcomeButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[text()='Let Get Started!']")));
+        		welcomeButton.click();
+        		
+        		WebElement startExploring = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@class='btn btn-primary']")));
+        		startExploring.click();
+        		
+        		WebElement skipButton = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@class='skip-button shepherd-button ']")));
+        		skipButton.click();
+        		
+        		WebElement settings = driver.findElement(By.xpath("//div[@id='main']/ul/li[7]"));
+        		settings.click();
+        		
+        		WebElement BrandingTab = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'd-flex') and contains(@class, 'tabs-head') and contains(@class, 'scroll-hide')]/div[3]")));
+        		BrandingTab.click();
+        		
+        		
+        		WebElement servicesTab = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(@class, 'd-flex') and contains(@class, 'tabs-head') and contains(@class, 'scroll-hide')]/div[4]")));
+        		servicesTab.click();
+
+        }
+    
+    
+ 
+  
+
+    // Generate a unique email for each signup attempt
+    private static String generateUniqueEmail() {
+        String prefix = "kunal.kumar+dummybot";
+        String suffix = "@bridgingtech.com";
+        long timestamp = System.currentTimeMillis();
+        return prefix + timestamp + suffix;
+    }
+
+    // Modify one character of the phone number on each run
+    private static String modifyNumber(String originalNumber) {
+        String areaCode = originalNumber.substring(0, 3);
+        int midSection = random.nextInt(900) + 100;
+        int lastSection = random.nextInt(9000) + 1000;
+
+        return String.format("%s%03d%04d", areaCode, midSection, lastSection);
+    }
+
+    // Attempt signup with the modified phone number and generated email
+    private static boolean trySignupWithPhoneNumber(WebDriver driver, String phoneNumber, String email) {
+        try {
+            WebElement phoneNumberField = driver.findElement(By.xpath("//input[@formcontrolname='contact']"));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].value = '';", phoneNumberField);
+            phoneNumberField.clear();
+            phoneNumberField.sendKeys(phoneNumber);
+
+            WebElement passwordField = driver.findElement(By.xpath("//input[@formcontrolname='password']"));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].value = '';", passwordField);
+            passwordField.sendKeys("K419unalkumar@");
+
+            WebElement submitButton = driver.findElement(By.id("primaryButton"));
+            submitButton.click();
+
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+            boolean isErrorPresent = driver.findElements(By.xpath("//div[@id='toast-container']/div/div[contains(text(), 'Contact number already exists')]")).size() > 0;
+            if (isErrorPresent) {
+                Thread.sleep(6000);
+            }
+            return !isErrorPresent;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}

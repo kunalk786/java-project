@@ -1,0 +1,129 @@
+package Test_Scenarios;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.Duration;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class SignUpWithPhone {
+
+    // Original phone numbers
+    static String[] phoneNumbers = {
+        "6362105081", // First number
+        "2085689244", // Second number
+        "3156391275", // Third number
+        "3152593478"  // Fourth number
+    };
+
+    static Random random = new Random();
+    static WebDriverWait wait;
+
+    @SuppressWarnings("unused")
+    public static void main(String[] args) throws InterruptedException {
+        WebDriver driver = new ChromeDriver();
+
+        // Set up wait
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+        // Maximize browser window
+        driver.manage().window().maximize();
+
+        // Navigate to the sign-up page
+        driver.get("https://www.practina.com/demo");
+        System.out.println(org.openqa.selenium.WebDriver.class.getPackage().getImplementationVersion());
+
+        // Store original window handle
+        String originalWindow = driver.getWindowHandle();
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+
+        // Attempt signup with a modified phone number and generated email
+        String selectedPhoneNumber = modifyNumber(phoneNumbers[random.nextInt(phoneNumbers.length)]);
+        String generatedEmail = generateUniqueEmail();
+
+        if (trySignupWithPhoneNumber(driver, selectedPhoneNumber, generatedEmail)) {
+            System.out.println("Signup successful with phone number: " + selectedPhoneNumber + " and email: " + generatedEmail);
+        } else {
+            System.out.println("Signup failed or phone number already exists.");
+        }
+
+        // Close the browser
+        driver.quit();
+    }
+
+    // Database logic separated into a helper method
+    public static String getContractTokenFromDB(int doctorId) {
+        String contractLinkToken = null;
+        try (Connection com = DriverManager.getConnection(
+                "jdbc:mysql://practina-live.czs1is1e6ezt.us-west-2.rds.amazonaws.com:1501/practina",
+                "Kun@l-KumaR", "0mlTnBs3JWQKXdkt")) {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Use a valid SQL statement
+            PreparedStatement ps = com.prepareStatement("SELECT contract_patient_token FROM `otp_report` WHERE doctor_id = ?");
+            ps.setInt(1, doctorId);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                contractLinkToken = rs.getString("contract_patient_token");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return contractLinkToken;
+    }
+
+    private static String generateUniqueEmail() {
+        String prefix = "kunal.kumar+dummybot";
+        String suffix = "@bridgingtech.com";
+        long timestamp = System.currentTimeMillis();
+        return prefix + timestamp + suffix;
+    }
+
+    // Modify one character of the phone number on each run
+    private static String modifyNumber(String originalNumber) {
+        String areaCode = originalNumber.substring(0, 3);
+        int midSection = random.nextInt(900) + 100;
+        int lastSection = random.nextInt(9000) + 1000;
+
+        return String.format("%s%03d%04d", areaCode, midSection, lastSection);
+    }
+
+    // Attempt signup with the modified phone number and generated email
+    private static boolean trySignupWithPhoneNumber(WebDriver driver, String phoneNumber, String email) {
+        try {
+            WebElement phoneNumberField = driver.findElement(By.xpath("//input[@formcontrolname='contact']"));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].value = '';", phoneNumberField);
+            phoneNumberField.clear();
+            phoneNumberField.sendKeys(phoneNumber);
+
+            WebElement passwordField = driver.findElement(By.xpath("//input[@formcontrolname='password']"));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].value = '';", passwordField);
+            passwordField.sendKeys("K419unalkumar@");
+
+            WebElement submitButton = driver.findElement(By.id("primaryButton"));
+            submitButton.click();
+
+            // Wait for a moment to process
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
+            // Check for error message
+            boolean isErrorPresent = driver.findElements(By.xpath("//div[@id='toast-container']/div/div[contains(text(), 'Contact number already exists')]")).size() > 0;
+            return !isErrorPresent;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+}
