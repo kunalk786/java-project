@@ -1,0 +1,24 @@
+import io.cucumber.java.en.*;
+
+public class StepDefinitionForPublishPost {
+
+    @Given("I log into Practina")
+    public void i_log_into_practina() {
+        // Selenium code to log in
+    }
+
+    @When("I create a new post")
+    public void i_create_a_new_post() {
+        // Selenium code to create a post
+    }
+
+    @When("I publish the post")
+    public void i_publish_the_post() {
+        // Selenium code to publish the post
+    }
+
+    @Then("the post is successfully posted")
+    public void the_post_is_successfully_posted() {
+        // Code to verify the API response status is true
+    }
+}

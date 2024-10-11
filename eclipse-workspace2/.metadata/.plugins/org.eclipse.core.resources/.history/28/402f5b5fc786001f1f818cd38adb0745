@@ -1,0 +1,89 @@
+package Test_Scenarios;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class languageChange {
+    static WebDriverWait wait;
+
+	public static void main(String[] args) throws InterruptedException {
+		  ChromeDriver driver = new ChromeDriver();
+	        driver.manage().window().maximize();
+	        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	
+	        driver.get("https://testbusiness.practina.com/");
+	        // Login process
+	        WebElement emailInput1 = driver.findElement(By.xpath("//input[@formcontrolname='email']"));
+	        emailInput1.sendKeys("kunal.kumar+dummybot1728019058797@bridgingtech.com");
+
+	        WebElement passInput1 = driver.findElement(By.xpath("//input[@id='mat-input-0']"));
+	        passInput1.sendKeys("K419unalkumar@");
+
+	        WebElement loginButton1 = driver.findElement(By.xpath("//span[@id='primaryButton']"));
+	        loginButton1.click();
+	        
+	        
+	    	Thread.sleep(5000);
+	    	
+	        WebElement settings2 = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//div[@id='main']/ul/li[7]"))));
+	        settings2.click();
+			
+			WebElement languageTab1 = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//ul[@class='menu-list']/li[5]"))));
+			languageTab1.click();
+			
+				
+			Thread.sleep(2000);
+			
+
+	        List<WebElement> languagesList1 = driver.findElements(By.xpath("//div[@class='language-body']/div[1]/div/label/span"));
+	        System.out.println(languagesList1);
+	        String language = "Italiano";
+
+	        for (WebElement selectedLanguage1 : languagesList1) {
+	        	System.out.println(selectedLanguage1.getText());
+	        	
+	        	if (selectedLanguage1.getText().equalsIgnoreCase(language)) {
+	            	
+	            	System.out.println(selectedLanguage1.isEnabled());
+//	            	WebElement clickOnLanguage = driver.findElement(By.xpath("//label[pre[text()='Italiano']]/preceding-sibling::input"));
+
+	            	 
+	            	 if (selectedLanguage1.isDisplayed()) {
+	                     // Use JavaScript to check if element is overlapped
+	                     boolean isOverlapped = (Boolean) ((JavascriptExecutor) driver).executeScript(
+	                         "var elem = arguments[0], " +
+	                         "  elemRect = elem.getBoundingClientRect(), " +
+	                         "  centerX = elemRect.left + elemRect.width / 2, " +
+	                         "  centerY = elemRect.top + elemRect.height / 2, " +
+	                         "  topElem = document.elementFromPoint(centerX, centerY); " +
+	                         "return topElem !== elem;"
+	                         , selectedLanguage1);
+
+	                     if (!isOverlapped) {
+	                         System.out.println("Element is not overlapped.");
+	                         selectedLanguage1.click();
+	                         break;
+	                     } else {
+	                         System.out.println("Element is overlapped.");
+	                         selectedLanguage1.click();
+	                         break;
+	                     }
+	                 } else {
+	                     System.out.println("Element is not displayed.");
+	                 }
+	            	 System.out.println(selectedLanguage1.isEnabled());
+
+	        	}
+	        }
+	            
+
+	}
+
+}

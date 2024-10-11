@@ -1,0 +1,77 @@
+package Test_Scenarios;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class languageChange {
+    static WebDriverWait wait;
+
+	public static void main(String[] args) throws InterruptedException {
+		  ChromeDriver driver = new ChromeDriver();
+	        driver.manage().window().maximize();
+	        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	
+	        driver.get("https://testbusiness.practina.com/");
+	        // Login process
+	        WebElement emailInput1 = driver.findElement(By.xpath("//input[@formcontrolname='email']"));
+	        emailInput1.sendKeys("kunal.kumar+dummybot1728019058797@bridgingtech.com");
+
+	        WebElement passInput1 = driver.findElement(By.xpath("//input[@id='mat-input-0']"));
+	        passInput1.sendKeys("K419unalkumar@");
+
+	        WebElement loginButton1 = driver.findElement(By.xpath("//span[@id='primaryButton']"));
+	        loginButton1.click();
+	        
+	        
+	    	Thread.sleep(5000);
+	    	
+	        WebElement settings2 = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//div[@id='main']/ul/li[7]"))));
+	        settings2.click();
+			
+			WebElement languageTab1 = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//ul[@class='menu-list']/li[5]"))));
+			languageTab1.click();
+			
+				
+			Thread.sleep(5000);
+			
+
+	        List<WebElement> languagesList1 = driver.findElements(By.xpath("//div[@class='language-body']/div[1]/div/label/span"));
+	        System.out.println(languagesList1);
+	        String language = "Italian";
+
+
+	        // Iterate through each language label span
+	        for (WebElement selectedLanguage : languagesList1) {
+	            String labelText = selectedLanguage.getText();
+	            System.out.println(labelText);
+
+	            // Match the language with "Italian"
+	            if (labelText.equalsIgnoreCase(language)) {
+	                System.out.println("Found: " + labelText);
+	                
+	                if (selectedLanguage.isDisplayed() && selectedLanguage.isEnabled()) {
+
+	                    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", selectedLanguage);
+
+	                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", selectedLanguage);
+
+	                    System.out.println("Language selected: " + labelText);
+	                    break;
+	                } else {
+	                    System.out.println("Language chip is not clickable.");
+	                }
+	            }
+	        }
+
+	            
+
+	}
+
+}

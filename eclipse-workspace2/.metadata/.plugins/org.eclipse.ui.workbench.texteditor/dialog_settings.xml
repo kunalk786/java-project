@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="publishButton1"/>
+		<item key="selection" value="index"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="index"/>
+			<item value="wait"/>
+			<item value=" WebElement contentTextField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(&quot;//div[contains(@class, &apos;position-relative&apos;) and contains(@class, &apos;edit-caption&apos;) and contains(@class, &apos;bg-white&apos;) and contains(@class, &apos;no-caption&apos;)]&quot;)));"/>
+			<item value="js1"/>
+			<item value="slf4j-simple"/>
+			<item value="webdrivermanager"/>
+			<item value="btn btn-primary submitBtn"/>
+			<item value="//div[@class=&apos;dialog-container p-1"/>
+			<item value="getText().equalsIgnoreCase"/>
+			<item value="//div[@id=&apos;main&apos;]/ul/li[2]"/>
+			<item value="WebElement settings = driver.findElement(By.xpath(&quot;//div[@id=&apos;main&apos;]/ul/li[7]&quot;));"/>
 			<item value="publishButton1"/>
 			<item value="futureMonthAbbreviation"/>
 			<item value="THE POST"/>
 			<item value="The post was not successfully published."/>
-			<item value="I&apos;m inside catch condition"/>
-			<item value="statusObject"/>
-			<item value="statusObject "/>
-			<item value="postStatus"/>
-			<item value="CountDownLatch"/>
-			<item value="quit"/>
-			<item value="modified_number"/>
-			<item value="PreparedStatement"/>
-			<item value="(//p[@class=&apos;fs-16 fw-500 text-purple mb-0&apos;])[2]"/>
-			<item value="modified"/>
-			<item value="contains"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="8"/>
-		<item key="DIALOG_Y_ORIGIN" value="283"/>
-		<item key="DIALOG_WIDTH" value="322"/>
-		<item key="DIALOG_HEIGHT" value="391"/>
+		<item key="DIALOG_X_ORIGIN" value="31"/>
+		<item key="DIALOG_Y_ORIGIN" value="416"/>
+		<item key="DIALOG_WIDTH" value="439"/>
+		<item key="DIALOG_HEIGHT" value="415"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 	</section>
 </section>
