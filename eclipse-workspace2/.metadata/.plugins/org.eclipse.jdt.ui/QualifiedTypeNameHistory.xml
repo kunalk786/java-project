@@ -28,5 +28,9 @@
     <fullyQualifiedTypeName name="java.time.Instant"/>
     <fullyQualifiedTypeName name="java.time.temporal.ChronoUnit"/>
     <fullyQualifiedTypeName name="java.time.ZoneId"/>
+    <fullyQualifiedTypeName name="java.time.LocalDate"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="java.time.format.DateTimeFormatter"/>
+    <fullyQualifiedTypeName name="java.time.format.DateTimeParseException"/>
+    <fullyQualifiedTypeName name="io.cucumber.cienvironment.internal.com.eclipsesource.json.JsonArray"/>
 </qualifiedTypeNameHistroy>

@@ -1,0 +1,561 @@
+package Test_Scenarios;
+
+import java.io.File;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.DevToolsException;
+import org.openqa.selenium.devtools.v114.network.Network;
+import org.openqa.selenium.devtools.v114.network.model.Response; // Correctly import Response
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+
+public class CreatePost {
+	static WebDriverWait wait;
+	private static final String WEBSOCKET_URL = "wss://admin.practina.com/v1/socket.io/?EIO=3&transport=websocket"; 
+																													
+
+	private static CountDownLatch latch = new CountDownLatch(1); 
+	private static boolean isPostPublished = false;
+	private static String description1;
+	private static String imagePath1;
+	private static String createdDate;
+	private static int index;
+	private static Integer sp_id = null;
+	private static int limit = 100;
+	private static String dateText;
+
+	public static void main(String[] args) throws InterruptedException {
+	    ChromeDriver driver = new ChromeDriver();
+	    driver.manage().window().maximize();
+	    
+	    // WebDriverWait initialization (unchanged)
+	    wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	    
+
+        DevTools devTools = driver.getDevTools();
+        devTools.createSession();
+
+
+        devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+        
+        
+        devTools.addListener(Network.responseReceived(), response -> {
+            Response res = response.getResponse();
+        
+            if (res.getUrl().contains("generateContentAi")) {
+                System.out.println("API URL: " + res.getUrl());
+                System.out.println("Status: " + res.getStatus());
+
+                try {
+           
+                    String responseBody = devTools.send(Network.getResponseBody(response.getRequestId())).getBody();
+
+                    // Parse JSON response
+                    JsonObject jsonResponse = JsonParser.parseString(responseBody).getAsJsonObject();
+                    JsonObject data = jsonResponse.getAsJsonObject("data");
+                    JsonObject userPostObj = data.getAsJsonObject("user_post_obj");
+
+            
+                    String description = userPostObj.get("description").getAsString();
+                    String imagePath = userPostObj.get("image_path").getAsString();
+
+            
+                    System.out.println("Description: " + description);
+                    System.out.println("Image Path: " + imagePath);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        
+        
+        devTools.addListener(Network.responseReceived(), response -> {
+            Response res = response.getResponse();
+
+      
+            if (res.getUrl().contains("publishPost")) {
+                System.out.println("API URL: " + res.getUrl());
+                System.out.println("Status: " + res.getStatus());
+
+                try {
+      
+                    Thread.sleep(1000); 
+                    
+
+                    String responseBody = devTools.send(Network.getResponseBody(response.getRequestId())).getBody();
+                    System.out.println("Response Body: " + responseBody);
+
+                    // Parse JSON response
+                    JsonObject jsonResponse = JsonParser.parseString(responseBody).getAsJsonObject();
+
+            
+                    if (jsonResponse.has("data")) {
+                        JsonObject dataObject = jsonResponse.getAsJsonObject("data"); 
+
+            
+                        if (dataObject.has("status") && dataObject.get("status").isJsonObject()) {
+                            JsonObject statusObject = dataObject.getAsJsonObject("status");
+                            
+                       
+                            for (Map.Entry<String, JsonElement> entry : statusObject.entrySet()) {
+                                JsonObject postStatusObj = entry.getValue().getAsJsonObject();
+                                if (postStatusObj.has("status")) {
+                                    boolean postStatus = postStatusObj.get("status").getAsBoolean();
+                                    System.out.println("Post Status: " + postStatus);
+
+                                    if (postStatus) {
+                                        System.out.println("The post was successfully published on sp_id " + entry.getKey() +" "+ postStatusObj.get("upp_id").getAsInt());
+                                    } else {
+                                        System.out.println("The post was not successfully published on sp_id " + entry.getKey() +" "+ postStatusObj.get("upp_id").getAsInt());
+
+                                    }
+                                }
+                            }
+                        } else {
+                            System.out.println("No 'status' object found in the response data.");
+                        }
+
+                    } else {
+                        System.out.println("No 'data' object found in the response.");
+                    }
+
+                } catch (DevToolsException devEx) {
+                    System.err.println("DevToolsException: " + devEx.getMessage());
+                    devEx.printStackTrace();
+                } catch (Exception e) {
+                    System.err.println("Error while processing response: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        });
+        
+        
+        
+       
+        // Navigate to Practina demo
+        driver.get("https://testbusiness.practina.com/");
+
+        // Login process
+        WebElement emailInput = driver.findElement(By.xpath("//input[@formcontrolname='email']"));
+        emailInput.sendKeys("kunal.kumar+dummybot1727953241144@bridgingtech.com");
+
+        WebElement passInput = driver.findElement(By.xpath("//input[@id='mat-input-0']"));
+        passInput.sendKeys("K419unalkumar@");
+
+        WebElement loginButton = driver.findElement(By.xpath("//span[@id='primaryButton']"));
+        loginButton.click();
+
+        
+        // Wait for AI Post element to be clickable
+        WebElement aiPost = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='main']/ul/li[2]")));
+        aiPost.click();
+
+        // Wait for the post element to be clickable
+      
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='/posts']/div/ul/li/a[1])")));
+        element.click();
+             
+       
+
+        // Wait for Create Post button to be cli
+        WebElement createPost = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, 'create-post')]//button[contains(text(), 'Create Post')]")));
+        System.out.println("Printing the status of element "+createPost.isEnabled());
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", createPost);
+        Thread.sleep(1000);
+        createPost.click();
+
+        // Input text in the textarea
+        WebElement lexiInputField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@placeholder='Start creating: Enter a thought to craft your post']")));
+        lexiInputField.sendKeys("Generate the post for tooth cleaning");
+
+        // Click the generate button
+        WebElement generateButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='generate-btn w-100 text-center mt-4']/button")));
+        generateButton.click();
+        
+        WebElement continueToPublishButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='preview-card mx-auto']/div[2]/button")));
+        continueToPublishButton.click();
+        
+        WebElement publishButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='wrapper-end px-lg-4 pb-lg-0 pb-4']/button")));
+        publishButton.click();
+        
+        Thread.sleep(10000);
+        
+        try {
+            // Attempt to find and interact with the dialogue container
+            WebElement dialogueContainer = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='dialog-container p-1']")));
+            Thread.sleep(2000);
+
+            // Rating button inside the dialog
+            WebElement ratingButton = dialogueContainer.findElement(By.xpath("//div[@class='rating text-center']/img[5]"));
+            ratingButton.click();
+
+            // Easy to understand reason
+            WebElement easyToUnderstandReason = driver.findElement(By.xpath("(//mat-button-toggle-group[@name='ingredients']/mat-button-toggle/button)[1]"));
+            easyToUnderstandReason.click();
+
+            Thread.sleep(2000);
+
+            // Submit button inside the dialog
+            WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='btn btn-primary submitBtn']")));
+            System.out.println("Printing the status of submitButton: " + submitButton.isEnabled());
+            submitButton.click();
+        } 
+        // Catch TimeoutException instead of NoSuchElementException
+        catch (TimeoutException e) {
+            System.err.println("No dialogue found of post");
+        }
+
+        // Proceed with clicking the 'Generate Content' button from the home page
+        WebElement generateContentButtonFromHome = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='btn-primary generate-content fs-14 text-nowrap fw-700 border-0 rounded-pill']")));
+        generateContentButtonFromHome.click();
+
+
+        
+        WebElement lexiInputField1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//textarea[@placeholder='Start creating: Enter a thought to craft your post']")));
+        lexiInputField1.sendKeys("Generate the post for tooth cleaning");
+
+        // Click the generate button
+        WebElement generateButton1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='generate-btn w-100 text-center mt-4']/button")));
+        generateButton1.click();
+        
+        WebElement continueToPublishButton1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='preview-card mx-auto']/div[2]/button")));
+        continueToPublishButton1.click();
+        
+        WebElement searchLibrary = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@mattooltip='Image Library']")));
+        searchLibrary.click();
+        
+        Thread.sleep(4000);
+        
+
+        List<WebElement> imagesInLibrary = driver.findElements(By.xpath("//div[@id='NgxMasonryGrid']/div/div/img"));
+
+        String postToBeSelected = "https://img.freepik.com/";
+
+        for (WebElement selectedImage : imagesInLibrary) {
+        	
+        	if (selectedImage.getAttribute("src").contains(postToBeSelected)) {
+            	System.out.println(selectedImage.getText());
+            	selectedImage.click();
+            	 WebElement publishButton1 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='wrapper-end px-lg-4 pb-lg-0 pb-4']/button")));
+                 publishButton1.click();
+                 break;
+            }
+            else {
+            	
+                	System.out.println(selectedImage.getText());
+                	selectedImage.click();
+                	 WebElement publishButton2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='wrapper-end px-lg-4 pb-lg-0 pb-4']/button")));
+                	 publishButton2.click();
+                	 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+//                	 wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='wrapper-checkbox mb-3']/input"))).click();
+                	 WebElement checkbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='wrapper-checkbox mb-3']/input")));
+                	 if (checkbox.isDisplayed() && checkbox.isEnabled()) {
+                	     // Use JavaScript to check if element is overlapped
+                	     boolean isOverlapped = (Boolean) ((JavascriptExecutor) driver).executeScript(
+                	         "var elem = arguments[0], " +
+                	         "  elemRect = elem.getBoundingClientRect(), " +
+                	         "  centerX = elemRect.left + elemRect.width / 2, " +
+                	         "  centerY = elemRect.top + elemRect.height / 2, " +
+                	         "  topElem = document.elementFromPoint(centerX, centerY); " +
+                	         "return topElem !== elem;", checkbox);
+
+                	     if (!isOverlapped) {
+                	         System.out.println("Checkbox is not overlapped.");
+                	         checkbox.click(); // Click the checkbox if it's not overlapped
+                	     } else {
+                	         System.out.println("Checkbox is overlapped by another element.");
+                	     }
+                	 } else {
+                	     System.out.println("Checkbox is not visible or enabled.");
+                	 }
+                	 
+                	 WebElement payAndContinueButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='payment_btn mb-3']/button")));
+                	 payAndContinueButton.click();
+                	 break;
+            }
+       
+        }
+        
+        Thread.sleep(13000);
+        
+        WebElement settings1 = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//div[@id='main']/ul/li[7]"))));
+		settings1.click();
+		
+		WebElement languageTab = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//ul[@class='menu-list']/li[5]"))));
+		languageTab.click();
+		
+			
+		Thread.sleep(2000);
+		
+
+		List<WebElement> languagesList1 = driver.findElements(By.xpath("//div[@class='language-body']/div[1]/div/label/span"));
+		System.out.println(languagesList1);
+
+		// Check if the list has at least 5 elements
+		if (languagesList1.size() >= 5) {
+			  // Click on the fifth element (index 4)
+		    WebElement fifthLanguage = languagesList1.get(4);
+		    System.out.println("Fifth Language: " + fifthLanguage.getText());
+
+		    if (fifthLanguage.isDisplayed() && fifthLanguage.isEnabled()) {
+		        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", fifthLanguage);
+		        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", fifthLanguage);
+		        System.out.println("Clicked on the fifth language: " + fifthLanguage.getText());
+		    } else {
+		        System.out.println("Fifth language is not clickable.");
+		    }
+		} else {
+		    System.out.println("The list does not have enough elements.");
+		}
+		
+		    // Click on the first element (index 0)
+		    WebElement firstLanguage = languagesList1.get(0);
+		    System.out.println("First Language: " + firstLanguage.getText());
+
+		    if (firstLanguage.isDisplayed() && firstLanguage.isEnabled()) {
+		        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", firstLanguage);
+		        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", firstLanguage);
+		        System.out.println("Clicked on the first language: " + firstLanguage.getText());
+		    } else {
+		        System.out.println("First language is not clickable.");
+		    }
+       
+        
+       
+		    WebElement saveButton2 = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//button[@class='btn btn-primary m-0 submit-btn']"))));
+		    saveButton2.click();
+		    
+		    
+		    try {
+	            // Attempt to find and interact with the dialogue container
+	            WebElement dialogueContainer2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='position-relative py-4 px-md-4 px-3']")));
+	            Thread.sleep(3000);
+
+	            WebElement saveWithoutresetButton = dialogueContainer2.findElement(By.xpath("//div[contains(@class, 'submit-btns')]//button[2]"));
+	            saveWithoutresetButton.click();
+
+	        } 
+	        // Catch TimeoutException instead of NoSuchElementException
+	        catch (TimeoutException e) {
+	            System.err.println("No dialogue found for Planner Reset");
+	        }
+		    
+		    
+		    WebElement aiPost2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='main']/ul/li[2]")));
+	        aiPost2.click();
+
+	        // Wait for the post element to be clickable
+	      
+	        WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='/posts']/div/ul/li/a[1])")));
+	        element2.click();
+	             
+	       
+	        Thread.sleep(10000);
+	        
+	     // Locate the element using WebDriverWait
+	        WebElement createPost2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, 'create-post')]//button[contains(text(), 'Create Post')]")));
+
+	        // Print the status of the element
+	        System.out.println("Printing the status of element " + createPost2.isEnabled());
+
+	        // Use JavaScript to scroll into view
+	        JavascriptExecutor js1 = (JavascriptExecutor) driver;
+	        js1.executeScript("arguments[0].scrollIntoView(true);", createPost2);
+
+	        // Introduce a small sleep if necessary (not recommended but sometimes useful for dynamic content)
+	        Thread.sleep(1000);
+
+	        // Retry mechanism to handle StaleElementReferenceException
+	        for (int i = 0; i < 3; i++) {
+	            try {
+	                // Locate the element again before clicking
+	                createPost2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, 'create-post')]//button[contains(text(), 'Create Post')]")));
+	                
+	                // Click the button
+	                createPost2.click();
+	                
+	                // Exit the loop if click is successful
+	                break;
+	            } catch (StaleElementReferenceException e) {
+	                // Re-attempt to find the element if stale element exception occurs
+	                System.out.println("Retrying due to stale element reference...");
+	            }
+	        }
+
+	        
+	        WebElement socialMediaPostDropdown = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='social-post-select']")));
+	        socialMediaPostDropdown.click();
+	        
+	        WebElement shortsReelButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@role='listbox']/mat-option[5]")));
+	        shortsReelButton.click();
+	      
+	        Thread.sleep(2000);
+	        WebElement contentTextField = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[contains(@class, 'position-relative') and contains(@class, 'edit-caption') and contains(@class, 'bg-white') and contains(@class, 'no-caption')]//textarea")));
+	        contentTextField.sendKeys("Tera Mera Safar\r\n"
+	        		+ "Reha Hai Jo Gujar\r\n"
+	        		+ "Maja Ta Aa Reha\r\n"
+	        		+ "Utto Lagi Jawe Dar");
+	        
+	        WebElement uploadVideoFileButton = driver.findElement(By.xpath("//button[contains(@class, 'btn-no-transform') and contains(@class, 'add-img-btn') and contains(@class, 'btn-outline-bg') and contains(@class, 'w-100') and contains(@class, 'fs-16')]"));
+	        uploadVideoFileButton.click();
+	        
+	        WebElement uploadButton4 = driver.findElement(By.id("imageFile"));
+	        File file = new File("C:\\Users\\BHTPL_USR73\\Downloads\\safar.mp4");
+	        uploadButton4.sendKeys(file.getAbsolutePath());
+	        
+	        WebElement publishShortButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='btn-primary btn w-100 fs-16 fw-600 text-center']")));
+	        publishShortButton.click();
+	        
+	        WebElement publishButton3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@class='wrapper-end px-lg-4 pb-lg-0 pb-4']/button)[1]")));
+	        publishButton3.click();
+	        
+	        Thread.sleep(10000);
+	        
+            
+	        WebElement aiPost3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='main']/ul/li[2]")));
+	        aiPost3.click();
+
+	        WebElement publishPostButton = driver.findElement(By.xpath("(//div[@id='/posts']/div/ul/li/a[1])[2]"));
+	        publishPostButton.click();
+
+	        WebElement facebookButton = driver.findElement(By.xpath("//div[@class='accounts']/ul/li[2]"));
+	        facebookButton.click();
+	        
+	        Thread.sleep(5000);
+	        
+	        devTools.addListener(Network.responseReceived(), response -> {
+	            Response res = response.getResponse();
+
+	            if (res.getUrl().contains("demo/api/post/all")) {
+	                System.out.println("API URL: " + res.getUrl());
+	                System.out.println("Status: " + res.getStatus());
+
+	                try {
+	                    // Wait a little before processing the response
+	                    Thread.sleep(1000);
+
+	                    String responseBody = devTools.send(Network.getResponseBody(response.getRequestId())).getBody();
+	                    System.out.println("Response Body: " + responseBody);
+
+	                    // Parse the JSON response
+	                    JsonObject jsonResponse = JsonParser.parseString(responseBody).getAsJsonObject();
+
+	                    if (jsonResponse.has("data")) {
+	                        JsonObject dataObject = jsonResponse.getAsJsonObject("data");
+
+	                        // Check if "posts" is a JSON array
+	                        if (dataObject.has("posts") && dataObject.get("posts").isJsonArray()) {
+	                            JsonArray postsArray = dataObject.getAsJsonArray("posts");
+
+	                            // Loop through each post in the array
+	                            for (JsonElement postElement : postsArray) {
+	                                JsonObject postObject = postElement.getAsJsonObject();
+
+	                                if (postObject.has("repost")) {
+	                                    boolean repostStatus = postObject.get("repost").getAsBoolean();
+
+	                                    if (repostStatus) {
+	                                        int uppId = postObject.get("upp_id").getAsInt();
+	                                        System.out.println("Repost Status: true, user_post_id: " + uppId);
+	                                        break;  // Stop once we find repost = true
+	                                    } else {
+	                                        System.out.println("Repost Status: false, skipping this post.");
+	                                    }
+	                                } else {
+	                                    System.out.println("Repost field not found, skipping this post.");
+	                                }
+	                            }
+	                        } else {
+	                            System.out.println("No 'posts' array found in the response data.");
+	                        }
+	                    } else {
+	                        System.out.println("No 'data' object found in the response.");
+	                    }
+
+	                } catch (DevToolsException devEx) {
+	                    System.err.println("DevToolsException: " + devEx.getMessage());
+	                    devEx.printStackTrace();
+	                } catch (Exception e) {
+	                    System.err.println("Error while processing response: " + e.getMessage());
+	                    e.printStackTrace();
+	                }
+	            }
+	        });
+	     // Find the list of "three dots" icons
+	        List<WebElement> threeDotsList = driver.findElements(By.xpath("//span[@class='select-by cursor moremenu_triger']/mat-icon"));
+	        System.out.println("Size of the threeDotsList: " + threeDotsList.size());
+	        int sizeOfList = threeDotsList.size();
+
+	        // Initialize JavascriptExecutor
+	        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
+
+	        // Loop through each "threeDots" element in the list
+	        for (int i = 0; i < sizeOfList; i++) {
+	            try {
+	                // Re-fetch the "threeDots" elements list after each iteration to avoid StaleElementReferenceException
+	                threeDotsList = driver.findElements(By.xpath("//span[@class='select-by cursor moremenu_triger']/mat-icon"));
+
+	                // Click on the current "threeDots" element using JavascriptExecutor
+	                WebElement threeDots = threeDotsList.get(i);
+	                jsExecutor.executeScript("arguments[0].click();", threeDots);
+	                System.out.println("Clicked on threeDots for item " + (i + 1));
+
+
+	                
+	                WebElement listInsideThreeDots = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                    By.xpath("//div[contains(@class, 'menu-container') and contains(@class, 'ng-tns-c41')]")
+	                ));
+
+	                try {
+	                    // Check if the "Repost" button is present inside the inner list (using relative XPath)
+	                    WebElement repostButton = listInsideThreeDots.findElement(By.xpath(".//div[contains(@class, 'menu-item') and contains(., 'Repost')]"));
+
+	                    // Click the "Repost" button using JavascriptExecutor
+	                    jsExecutor.executeScript("arguments[0].click();", repostButton);
+	                    System.out.println("Repost button clicked for item " + (i + 1));
+
+	                } catch (NoSuchElementException e) {
+	                    // If the "Repost" button is not found, log it and continue to the next "threeDots" element
+	                    System.out.println("Repost button not found for item " + (i + 1));
+	                }
+
+	            } catch (Exception e) {
+	                // Log any error that occurs during the processing of each item
+	                System.out.println("Error occurred while processing item " + (i + 1) + ": " + e.getMessage());
+	            }
+	        }
+
+	        }
+
+	        
+    	}
+	           
+

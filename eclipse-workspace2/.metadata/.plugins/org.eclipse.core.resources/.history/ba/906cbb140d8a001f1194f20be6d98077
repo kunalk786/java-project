@@ -1,0 +1,169 @@
+package Test_Scenarios;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class languageChange {
+    static WebDriverWait wait;
+
+    public static void main(String[] args) {
+        ChromeDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+        try {
+            driver.get("https://testbusiness.practina.com/");
+            // Login process
+            driver.findElement(By.xpath("//input[@formcontrolname='email']")).sendKeys("kunal.kumar+dummybot1728019058797@bridgingtech.com");
+            driver.findElement(By.xpath("//input[@id='mat-input-0']")).sendKeys("K419unalkumar@");
+            driver.findElement(By.xpath("//span[@id='primaryButton']")).click();
+
+            Thread.sleep(5000);
+
+            WebElement settings1 = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//div[@id='main']/ul/li[7]"))));
+            settings1.click();
+
+            WebElement languageTab = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//ul[@class='menu-list']/li[5]"))));
+            languageTab.click();
+
+            Thread.sleep(2000);
+
+            List<WebElement> languagesList1 = driver.findElements(By.xpath("//div[@class='language-body']/div[1]/div/label/span"));
+            System.out.println("Languages List Size: " + languagesList1.size());
+
+            // Check if the list has at least 5 elements
+            if (languagesList1.size() >= 5) {
+                clickLanguage(languagesList1.get(4), driver);
+            } else {
+                System.out.println("The list does not have enough elements.");
+            }
+
+            // Click on the first element (index 0)
+            if (languagesList1.size() > 0) {
+                clickLanguage(languagesList1.get(0), driver);
+            }
+
+            WebElement saveButton2 = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//button[@class='btn btn-primary m-0 submit-btn']"))));
+            saveButton2.click();
+
+            // Attempt to find and interact with the dialogue container
+            handleDialogue(driver);
+
+            WebElement aiPost3 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='main']/ul/li[2]")));
+            aiPost3.click();
+
+            // Click the publish post button
+            WebElement publishPostButton = driver.findElement(By.xpath("(//div[@id='/posts']/div/ul/li/a[1])[2]"));
+            publishPostButton.click();
+
+            checkAndClickPost(driver);
+
+        } catch (StaleElementReferenceException e) {
+            System.out.println("Caught StaleElementReferenceException: " + e.getMessage());
+        } catch (TimeoutException e) {
+            System.out.println("Caught TimeoutException: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An unexpected exception occurred: " + e.getMessage());
+        } finally {
+            driver.quit(); // Ensure the driver quits after execution
+        }
+    }
+
+    private static void clickLanguage(WebElement language, ChromeDriver driver) {
+        System.out.println("Language: " + language.getText());
+        if (language.isDisplayed() && language.isEnabled()) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", language);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", language);
+            System.out.println("Clicked on the language: " + language.getText());
+        } else {
+            System.out.println("Language is not clickable.");
+        }
+    }
+
+    private static void handleDialogue(ChromeDriver driver) {
+        try {
+            WebElement dialogueContainer2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='position-relative py-4 px-md-4 px-3']")));
+            Thread.sleep(3000);
+
+            WebElement saveWithoutresetButton = dialogueContainer2.findElement(By.xpath("//div[contains(@class, 'submit-btns')]//button[2]"));
+            saveWithoutresetButton.click();
+
+        } catch (TimeoutException e) {
+            System.err.println("No dialogue found for Planner Reset");
+        }
+    }
+
+    private static void checkAndClickPost(ChromeDriver driver) {
+        List<WebElement> datesPerPost = driver.findElements(By.xpath("//div[@class='blog-wrapper-innr']/div/div/span[2]"));
+        System.out.println("Size of list after scrolling: " + datesPerPost.size());
+        int sizeOfList = datesPerPost.size();
+
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
+        String formattedDate = currentDate.format(formatter);
+        System.out.println("Formatted Date: " + formattedDate);
+
+        // Check if there are any posts in the list
+        if (sizeOfList > 0) {
+            // Get the date text from the last post
+            String dateText = datesPerPost.get(sizeOfList - 1).getText();
+            try {
+                // Parse the date from the text
+                LocalDate postDate = LocalDate.parse(dateText, formatter);
+
+                // Compare the post date with the current date
+                if (postDate.isBefore(currentDate)) {
+                    // Click the three dots icon for the post
+                    WebElement threeDots = driver.findElement(By.xpath("//div[@class='blog-wrapper-innr']/div/app-facebook/div/div/span/mat-icon"));
+                    threeDots.click();
+                    System.out.println("Clicked on post with date: " + dateText);
+                } else {
+                    System.out.println("Post date is not earlier than today.");
+                    // Scroll to the page listing
+                    WebElement pageListing = driver.findElement(By.xpath("//div[@class='blogs-wrapper hide-scroll-bar']"));
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", pageListing);
+
+                    // Re-fetch the dates after scrolling
+                    datesPerPost = driver.findElements(By.xpath("//div[@class='blog-wrapper-innr']/div/div/span[2]"));
+                    sizeOfList = datesPerPost.size(); // Update the size of the list
+
+                    // Check again if there are posts after scrolling
+                    if (sizeOfList > 0) {
+                        // Get the date text from the last post
+                        dateText = datesPerPost.get(sizeOfList - 1).getText();
+                        LocalDate postDate2 = LocalDate.parse(dateText, formatter);
+
+                        // Compare the new post date with the current date
+                        if (postDate2.isBefore(currentDate)) {
+                            // Click the three dots icon for the post
+                            WebElement threeDots1 = driver.findElement(By.xpath("//div[@class='blog-wrapper-innr']/div/app-facebook/div/div/span/mat-icon"));
+                            threeDots1.click();
+                            System.out.println("Clicked on post with date: " + dateText);
+                        } else {
+                            System.out.println("No post found which has repost button.");
+                        }
+                    } else {
+                        System.out.println("No posts found after scrolling.");
+                    }
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Error parsing date: " + dateText);
+            }
+        } else {
+            System.out.println("There are less than 10 posts.");
+        }
+    }
+}

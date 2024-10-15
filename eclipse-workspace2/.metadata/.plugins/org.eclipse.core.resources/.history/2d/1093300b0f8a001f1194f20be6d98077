@@ -1,0 +1,67 @@
+package Test_Scenarios;
+
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.StaleElementReferenceException;
+
+public class publishPost {
+    static WebDriverWait wait;
+
+    public static void main(String[] args) {
+        // Set the path for ChromeDriver
+        System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver"); // Specify correct path for your chromedriver
+        
+        WebDriver driver = null;
+        
+        try {
+            // Initialize the ChromeDriver
+            driver = new ChromeDriver();
+            driver.manage().window().maximize();
+            wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
+            // Navigate to the website
+            driver.get("https://testbusiness.practina.com/");
+
+            // Login process
+            driver.findElement(By.xpath("//input[@formcontrolname='email']"))
+                  .sendKeys("kunal.kumar+dummybot1728019058797@bridgingtech.com");
+            driver.findElement(By.xpath("//input[@id='mat-input-0']")).sendKeys("K419unalkumar@");
+            driver.findElement(By.xpath("//span[@id='primaryButton']")).click();
+
+            // Wait for AI Post link to be clickable and click it
+            WebElement aiPost2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='main']/ul/li[2]")));
+            aiPost2.click();
+
+            // Wait for the post element to be clickable
+            WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@id='/posts']/div/ul/li/a)[2]")));
+            element2.click();
+
+            // Wait for Facebook button and click it
+            WebElement facebookButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='accounts']/ul/li[2]")));
+            facebookButton.click();
+
+            // Wait for and click on the three dots list
+            WebElement threeDotsList = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='select-by cursor moremenu_triger']/mat-icon")));
+            threeDotsList.click();
+
+        } catch (TimeoutException e) {
+            System.out.println("Element not found within the time limit: " + e.getMessage());
+        } catch (StaleElementReferenceException e) {
+            System.out.println("Stale Element Exception: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        } finally {
+            // Ensure the driver is properly closed at the end
+            if (driver != null) {
+                driver.quit();
+            }
+        }
+    }
+}
